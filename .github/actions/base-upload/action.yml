@@ -1,0 +1,28 @@
+# GitHub Action for uploading base coverage artifacts
+# Used in conjunction with base-download to compare coverage between branches
+name: 'Upload Base Coverage'
+description: 'Uploads base branch coverage data as an artifact for later comparison'
+
+inputs:
+  coverage-file:
+    description: 'Path to the coverage file to upload'
+    required: false
+    default: 'coverage.out'
+  artifact-name:
+    description: 'Name of the artifact to upload'
+    required: false
+    default: 'base-coverage'
+  retention-days:
+    description: 'Number of days to retain the artifact'
+    required: false
+    default: '7'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Upload coverage artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.coverage-file }}
+        retention-days: ${{ inputs.retention-days }}
